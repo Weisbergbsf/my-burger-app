@@ -27,6 +27,7 @@ class BurgerBuilder extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props);
     axios
       .get("https://react-my-burger-622eb.firebaseio.com/ingredients.json")
       .then(res => {
@@ -77,29 +78,44 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    this.setState({ loading: true });
-    const order = {
-      ingedients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: "Weisber Barros",
-        address: {
-          street: "Testestreet 1",
-          zipCode: "3231313",
-          country: "Brazil"
-        },
-        email: "weiberg@email.com"
-      },
-      deliveryMethod: "fastest"
-    };
-    axios
-      .post("/orders.json", order)
-      .then(response => {
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch(error => {
-        this.setState({ loading: false, purchasing: false });
-      });
+    // this.setState({ loading: true });
+    // const order = {
+    //   ingedients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: "Weisber Barros",
+    //     address: {
+    //       street: "Testestreet 1",
+    //       zipCode: "3231313",
+    //       country: "Brazil"
+    //     },
+    //     email: "weiberg@email.com"
+    //   },
+    //   deliveryMethod: "fastest"
+    // };
+    // axios
+    //   .post("/orders.json", order)
+    //   .then(response => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   })
+    //   .catch(error => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   });
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      queryParams.push(
+        encodeURIComponent(i) +
+          "=" +
+          encodeURIComponent(this.state.ingredients[i])
+      );
+    }
+    console.log("queryParams: ",queryParams)
+    const queryString = queryParams.join("&");
+    console.log("queryString: ",queryString)
+    this.props.history.push({
+      pathname: "checkout",
+      search: "?" + queryString
+    });
   };
 
   updatePurchaseState(ingedients) {
@@ -121,7 +137,11 @@ class BurgerBuilder extends Component {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
     let orderSummary = null;
-    let burger = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
+    let burger = this.state.error ? (
+      <p>Ingredients can't be loaded!</p>
+    ) : (
+      <Spinner />
+    );
     if (this.state.ingredients) {
       burger = (
         <Aux>
