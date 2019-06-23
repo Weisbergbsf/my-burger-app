@@ -98,10 +98,10 @@ class BurgerBuilder extends Component {
     });
   };
 
-  updatePurchaseState(ingedients) {
-    const sum = Object.keys(ingedients)
+  updatePurchaseState(ingredients) {
+    const sum = Object.keys(ingredients)
       .map(igKey => {
-        return ingedients[igKey];
+        return ingredients[igKey];
       })
       .reduce((sum, el) => {
         return sum + el;
