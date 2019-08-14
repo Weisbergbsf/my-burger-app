@@ -2,7 +2,6 @@ import React from "react";
 import "./Order.css";
 
 const order = props => {
-  console.log("oooooooooo", props);
   const ingredients = [];
   for (let ingredientsName in props.ingredients) {
     ingredients.push({
@@ -12,7 +11,6 @@ const order = props => {
   }
 
   const ingredientsOutput = ingredients.map(ig => {
-    console.log(ig);
     return (
       <span
         key={ig.name}
