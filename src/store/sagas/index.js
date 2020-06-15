@@ -7,6 +7,7 @@ import {
   authUserSaga,
   authCheckStateSaga,
 } from "./auth";
+import { initIngredientsSaga } from "./burgerBuilder";
 
 export function* whatchAuth() {
   yield all([
@@ -15,4 +16,8 @@ export function* whatchAuth() {
     takeEvery(actionTypes.AUTH_USER, authUserSaga),
     takeEvery(actionTypes.AUTH_CHECK_STATE, authCheckStateSaga),
   ]);
+}
+
+export function* watchBurguerBuild() {
+  yield takeEvery(actionTypes.INIT_INGREDIENTS, initIngredientsSaga);
 }
